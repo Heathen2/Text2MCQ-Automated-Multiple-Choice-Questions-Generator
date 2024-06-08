@@ -21,11 +21,3 @@ if gpt_key:
                 file_name="Final_Quiz.xlsx",
                 )
             st.write(st.session_state["response"])
-        if "response" in st.session_state:
-            with open("Final_Quiz.xlsx", "rb") as file:
-                btn = st.download_button(
-                label="Download",
-                data=file,
-                file_name="Final_Quiz.xlsx",
-                )
-            st.write(st.session_state["response"])
