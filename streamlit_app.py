@@ -9,6 +9,6 @@ if gpt_key:
         process_btn = st.button("Extract")
         if process_btn:
             with st.spinner("Extracting"):
-                response = get_quiz(gpt_key, file_to_process.name)
+                response = get_quiz(gpt_key, file_to_process)
             st.success("Extracted and saved") 
             st.write(response)
