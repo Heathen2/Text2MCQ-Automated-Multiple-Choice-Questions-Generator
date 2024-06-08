@@ -2,7 +2,7 @@ import streamlit as st
 from lang_xtract import get_quiz
 
 
-gpt_key = st.text_input("openai key")
+gpt_key = st.text_input("openai key",type="password")
 if gpt_key:
     file_to_process = st.file_uploader("Upload the file",type=["pdf"])
     if file_to_process:
