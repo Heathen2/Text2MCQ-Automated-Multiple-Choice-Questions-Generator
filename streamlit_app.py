@@ -12,5 +12,11 @@ if gpt_key:
                 with open("input_to_process.pdf",'wb') as file:
                     file.write(file_to_process.getvalue())
                 response = get_quiz(gpt_key, "input_to_process.pdf")
-            st.success("Extracted and saved") 
+            st.success("Extracted and saved")
+            with open("Final_Quiz.xlsx", "rb") as file:
+                btn = st.download_button(
+                label="Download",
+                data=file,
+                file_name="Final_Quiz.xlsx",
+                )
             st.write(response)
