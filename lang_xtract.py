@@ -48,11 +48,9 @@ def extract_quiz(api_key,file_content):
     runnable = prompt | llm.with_structured_output(schema=Data)
     
     for page in file_content:
-        print(page.page_content.replace('\n',' '))
-        response = runnable.invoke({"text": page.page_content})
+        response = runnable.invoke({"text": page.page_content.replace('\n',' ')})
         questions.extend(response.Questions)
         quiz_list.extend(response.Questions)
-        print(response)
 
     # Convert questions to dictionary for easier handling
     data = {
