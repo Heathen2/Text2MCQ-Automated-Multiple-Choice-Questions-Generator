@@ -2,7 +2,7 @@
 
 All credit goes to Langchain & Streamlit for this project.
 
-Demo - https://quiz-from-text-sn4bynrj7s9thvymsiqccq.streamlit.app/
+Demo - https://text2mcq.streamlit.app/
 
 **Overview**
 
