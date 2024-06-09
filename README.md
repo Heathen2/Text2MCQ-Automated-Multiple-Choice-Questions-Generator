@@ -1,4 +1,4 @@
-**MCQ Generator**
+**Text2MCQ**
 
 All credit goes to Langchain & Streamlit for this project.
 
@@ -6,7 +6,7 @@ Demo - https://text2mcq.streamlit.app/
 
 **Overview**
 
-MCQ Generator is a Python application powered by GPT that allows users to upload documents and generate multiple-choice questions (MCQs) in a structured format. Built with LangChain and Streamlit, this application aims to facilitate the creation of quizzes, assessments, or study materials by automating the process of question generation.
+Text2MCQ is a Python application powered by GPT that allows users to upload documents and generate multiple-choice questions (MCQs) in a structured format. Built with LangChain and Streamlit, this application aims to facilitate the creation of quizzes, assessments, or study materials by automating the process of question generation.
 
 ![image](https://github.com/Heathen2/quiz-from-text/assets/34716154/c6972f64-7b03-46b3-926f-3c692437f3b1)
 ![image](https://github.com/Heathen2/quiz-from-text/assets/34716154/07283cf6-3d1c-4224-a50e-4b620553100e)
