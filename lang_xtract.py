@@ -63,6 +63,7 @@ def extract_quiz(api_key,file_content):
                 "You are an expert teacher who is preparing structured MCQ questions for an exam. "
                 "Analyze the texbook passage to understand and then create a structured question, four options, correct answer option and answer explanation from the passage."
                 "The passage and generated questions might have many errors which should be corrected, So you should always examine and fix the errors in all the questions, options, correct answer options and answer explanations"
+                "Verify that each question is correct based on the options and correct answer, if its not fix."
             ),
 
             ("human", "{text}"),
