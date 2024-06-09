@@ -25,7 +25,7 @@ if gpt_key:
                 response = get_quiz(gpt_key, file_is,file_type)
                 st.session_state["response"] = response
             st.success("Extracted and saved")
-            with open("Final_Quiz.xlsx", "rb") as file:
+            with open("output/Final_Quiz.xlsx", "rb") as file:
                 btn = st.download_button(
                 label="Download",
                 data=file,
