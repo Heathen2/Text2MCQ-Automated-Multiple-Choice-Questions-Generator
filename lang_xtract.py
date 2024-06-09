@@ -5,7 +5,7 @@ from typing import List, Optional
 from langchain_openai import ChatOpenAI
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_core.pydantic_v1 import BaseModel, Field
-from langchain_community.document_loaders import PyMuPDFLoader
+from langchain_community.document_loaders import PyMuPDFLoader,Docx2txtLoader,TextLoader
 import pandas as pd
 from datetime import datetime
 import os
@@ -41,14 +41,15 @@ def clear_all():
         
 
 class Question(BaseModel):
-    """A quiz question along with multiple choice options and the correct answer."""
+    """A quiz question along with multiple-choice options and the correct answer."""
     question: str = Field(default=None, description="The quiz question.")
-    option_a: str = Field(default=None, description="Option a for the question.")
-    option_b: str = Field(default=None, description="Option b for the question.")
-    option_c: str = Field(default=None, description="Option c for the question.")
-    option_d: str = Field(default=None, description="Option d for the question.")
-    correct_answer_option: str = Field(default=None, description="The correct answer option for the question.")
-    answer_explanation: str = Field(default=None, description="The very brief explanation for the correct answer.")
+    option_a: str = Field(default=None, description="Option 'a' for the question.")
+    option_b: str = Field(default=None, description="Option 'b' for the question.")
+    option_c: str = Field(default=None, description="Option 'c' for the question.")
+    option_d: str = Field(default=None, description="Option 'd' for the question.")
+    correct_option: str = Field(default=None, description="The correct option, which is one of 'a', 'b', 'c', or 'd'.")
+    answer_explanation: str = Field(default=None, description="A brief explanation for the correct answer.")
+
 
 class Data(BaseModel):
     """Quiz questions."""
@@ -82,11 +83,11 @@ def extract_quiz(api_key,file_content):
     # Convert questions to dictionary for easier handling
     data = {
         "question": [q.question for q in questions],
-        "option1": [q.option_a for q in questions],
-        "option2": [q.option_b for q in questions],
-        "option3": [q.option_c for q in questions],
-        "option4": [q.option_d for q in questions],
-        "correct_answer": [q.correct_answer_option for q in questions],
+        "option_a": [q.option_a for q in questions],
+        "option_b": [q.option_b for q in questions],
+        "option_c": [q.option_c for q in questions],
+        "option_d": [q.option_d for q in questions],
+        "correct_option": [q.correct_option for q in questions],
         "answer_explanation": [q.answer_explanation for q in questions]
     }
 
@@ -100,9 +101,14 @@ def extract_quiz(api_key,file_content):
 
 
 
-def get_quiz(api_key, doc_name):
+def get_quiz(api_key, doc_name,file_type):
     clear_all()
-    loader = PyMuPDFLoader(doc_name)
+    if file_type == 'pdf':
+        loader = PyMuPDFLoader(doc_name)
+    elif file_type == 'docx' or file_type=='doc':
+        loader = Docx2txtLoader(doc_name)
+    elif file_type == 'txt':
+        loader = TextLoader(doc_name,encoding='utf-8')
     text_splitter =  CharacterTextSplitter(
         # Set a really small chunk size, just to show.
         chunk_size=500,
@@ -120,11 +126,11 @@ def get_quiz(api_key, doc_name):
 
     data = {
             "question": [q.question for q in quiz_list],
-            "option1": [q.option_a for q in quiz_list],
-            "option2": [q.option_b for q in quiz_list],
-            "option3": [q.option_c for q in quiz_list],
-            "option4": [q.option_d for q in quiz_list],
-            "correct_answer": [q.correct_answer_option for q in quiz_list],
+            "option_a": [q.option_a for q in quiz_list],
+            "option_b": [q.option_b for q in quiz_list],
+            "option_c": [q.option_c for q in quiz_list],
+            "option_d": [q.option_d for q in quiz_list],
+            "correct_answer": [q.correct_option for q in quiz_list],
             "answer_explanation": [q.answer_explanation for q in quiz_list]
         }
 
