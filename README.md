@@ -7,9 +7,11 @@ Demo - https://quiz-from-text-sn4bynrj7s9thvymsiqccq.streamlit.app/
 **Overview**
 
 MCQ Generator is a Python application powered by GPT that allows users to upload documents and generate multiple-choice questions (MCQs) in a structured format. Built with LangChain and Streamlit, this application aims to facilitate the creation of quizzes, assessments, or study materials by automating the process of question generation.
+
 ![image](https://github.com/Heathen2/quiz-from-text/assets/34716154/c6972f64-7b03-46b3-926f-3c692437f3b1)
 ![image](https://github.com/Heathen2/quiz-from-text/assets/34716154/07283cf6-3d1c-4224-a50e-4b620553100e)
-![image](https://github.com/Heathen2/quiz-from-text/assets/34716154/217a641b-6356-4c35-a4c3-6c6dfd2cf426)
+![image](https://github.com/Heathen2/quiz-from-text/assets/34716154/ce51bee1-c23f-43f3-affc-4e53ccbaf9bf)
+![image](https://github.com/Heathen2/quiz-from-text/assets/34716154/03a70849-b627-4efc-adcb-61e76e043b5d)
 
 
 **Features**
