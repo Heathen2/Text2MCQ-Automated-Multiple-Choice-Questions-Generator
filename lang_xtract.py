@@ -60,7 +60,11 @@ def extract_quiz(api_key,file_content):
     [
         (
             "system",
-            "As an expert teacher, your task is to craft well-structured multiple-choice questions (MCQs) for an upcoming exam. Begin by carefully analyzing the textbook passage provided, ensuring a deep understanding. Then, formulate a clear question, four plausible options, indicate the correct answer option, and provide a concise explanation for the answer. Note that both the passage and the generated questions may contain errors, which you must identify and rectify. Your responsibility is to meticulously examine and correct any errors in the questions, options, correct answers, and explanations."
+            "As an expert teacher, your task is to craft well-structured multiple-choice questions (MCQs) for an upcoming exam. "
+            "Begin by carefully analyzing the textbook passage provided, ensuring a deep understanding. "
+            "Then, formulate a clear question, four plausible options, indicate the correct answer option, and provide a concise explanation for the answer. "
+            "Note that both the passage and the generated questions may contain errors, which you must identify and rectify. "
+            "Your responsibility is to meticulously examine and correct any errors in the questions, options, correct answers, and explanations."
         ),
         ("human", "{text}"),
     ]
