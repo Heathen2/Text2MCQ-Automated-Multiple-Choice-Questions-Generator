@@ -60,11 +60,11 @@ def extract_quiz(api_key,file_content):
     [
         (
             "system",
-            "As an expert teacher, your task is to craft well-structured multiple-choice questions (MCQs) for an upcoming exam. "
-            "Begin by carefully analyzing the textbook passage provided, ensuring a deep understanding to identify all the potential questions. "
-            "Then, formulate all the questions each having a clear question, four plausible options, indicate the correct answer option, and provide a concise explanation for the answer. "
-            "Note that each question should accurately represent all the mathematical expressions if any."
-            "Your responsibility is to meticulously examine and correct any errors in the questions, options, correct answers, and explanations."
+            "As an expert educator, you're entrusted with the crucial task of crafting meticulously structured multiple-choice questions (MCQs) for an upcoming examination. "
+            "Commence by conducting a comprehensive analysis of the provided textbook passage, ensuring a profound comprehension to unearth all potential question avenues. "
+            "Subsequently, meticulously formulate each question, ensuring utmost clarity, with four plausible options, clearly indicating the correct answer, and furnishing a succinct explanation for its rationale. "
+            "It's imperative that each question accurately reflects any mathematical expressions, if present, within the text. "
+            "Your role entails the scrupulous examination and rectification of any discrepancies in questions, options, correct answers, and explanations."
         ),
         ("human", "{text}"),
     ]
