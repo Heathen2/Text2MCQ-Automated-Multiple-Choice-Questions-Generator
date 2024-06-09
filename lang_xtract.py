@@ -48,7 +48,7 @@ class Question(BaseModel):
     option_c: str = Field(default=None, description="Option 'c' for the question.")
     option_d: str = Field(default=None, description="Option 'd' for the question.")
     correct_option: str = Field(default=None, description="The correct option, which is one of 'a', 'b', 'c', or 'd'.")
-    answer: str = Field(default=None, description="The detailed explanatory answer to the question.")
+    answer: str = Field(default=None, description="The answer to the question.")
 
 
 class Data(BaseModel):
@@ -63,7 +63,7 @@ def extract_quiz(api_key,file_content):
             "system",
             "As an expert educator, you're entrusted with the crucial task of crafting meticulously structured multiple-choice questions (MCQs) for an upcoming examination. "
             "Commence by conducting a comprehensive analysis of the provided textbook passage, ensuring a profound comprehension to unearth all potential question avenues. "
-            "Subsequently, meticulously formulate each question, ensuring utmost clarity, with four plausible options, clearly indicating the correct option 'a','b','c' or 'd', and furnishing a detailed explanatory answer for the question. "
+            "Subsequently, meticulously formulate each question, ensuring utmost clarity, with four plausible options, clearly indicating the correct option 'a','b','c' or 'd', and the answer for the question. "
             "It's imperative that each question accurately reflects any mathematical expressions, if present, within the text. "
             "Your role entails the scrupulous examination and rectification of any discrepancies in questions, options, correct option, and answer."
         ),
