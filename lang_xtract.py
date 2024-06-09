@@ -41,18 +41,18 @@ def clear_all():
         
 
 class Question(BaseModel):
-    """A quiz question along with multiple-choice options and the correct answer."""
+    """A question along with multiple-choice options and the correct answer."""
     question: str = Field(default=None, description="The quiz question.")
     option_a: str = Field(default=None, description="Option 'a' for the question.")
     option_b: str = Field(default=None, description="Option 'b' for the question.")
     option_c: str = Field(default=None, description="Option 'c' for the question.")
     option_d: str = Field(default=None, description="Option 'd' for the question.")
     correct_option: str = Field(default=None, description="The correct option, which is one of 'a', 'b', 'c', or 'd'.")
-    answer_explanation: str = Field(default=None, description="A brief explanation for the correct answer.")
+    answer: str = Field(default=None, description="The concise answer for the question.")
 
 
 class Data(BaseModel):
-    """Quiz questions."""
+    """List of questions."""
     Questions: List[Question]
 
 
@@ -63,13 +63,15 @@ def extract_quiz(api_key,file_content):
             "system",
             "As an expert educator, you're entrusted with the crucial task of crafting meticulously structured multiple-choice questions (MCQs) for an upcoming examination. "
             "Commence by conducting a comprehensive analysis of the provided textbook passage, ensuring a profound comprehension to unearth all potential question avenues. "
-            "Subsequently, meticulously formulate each question, ensuring utmost clarity, with four plausible options, clearly indicating the correct answer, and furnishing a succinct explanation for its rationale. "
+            "Subsequently, meticulously formulate each question, ensuring utmost clarity, with four plausible options, clearly indicating the correct option 'a','b','c' or 'd', and furnishing a succinct answer for the question. "
             "It's imperative that each question accurately reflects any mathematical expressions, if present, within the text. "
-            "Your role entails the scrupulous examination and rectification of any discrepancies in questions, options, correct answers, and explanations."
+            "Your role entails the scrupulous examination and rectification of any discrepancies in questions, options, correct option, and answer."
         ),
         ("human", "{text}"),
     ]
     )
+
+
 
     llm = ChatOpenAI(model="gpt-3.5-turbo",temperature=0,max_tokens=None,timeout=None,max_retries=2, api_key =api_key)
     questions = []
@@ -88,7 +90,7 @@ def extract_quiz(api_key,file_content):
         "option_c": [q.option_c for q in questions],
         "option_d": [q.option_d for q in questions],
         "correct_option": [q.correct_option for q in questions],
-        "answer_explanation": [q.answer_explanation for q in questions]
+        "answer": [q.answer for q in questions]
     }
 
     # Convert dictionary to DataFrame
@@ -130,8 +132,8 @@ def get_quiz(api_key, doc_name,file_type):
             "option_b": [q.option_b for q in quiz_list],
             "option_c": [q.option_c for q in quiz_list],
             "option_d": [q.option_d for q in quiz_list],
-            "correct_answer": [q.correct_option for q in quiz_list],
-            "answer_explanation": [q.answer_explanation for q in quiz_list]
+            "correct_option": [q.correct_option for q in quiz_list],
+            "answer": [q.answer for q in quiz_list]
         }
 
     # Convert dictionary to DataFrame
