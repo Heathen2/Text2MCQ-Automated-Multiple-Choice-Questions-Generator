@@ -10,9 +10,35 @@ import pandas as pd
 from datetime import datetime
 import os
 
-if not os.path.exists('temp'):
-        os.makedirs('temp')
 quiz_list = []
+output_path = "output/Final_Quiz.xlsx"
+temp_directory="temp/"
+if not os.path.exists('temp'):
+            os.makedirs('temp')
+if not os.path.exists('output'):
+            os.makedirs('output')            
+
+def clear_all():
+    quiz_list.clear()
+    if os.path.exists(output_path):
+        try:
+            os.remove(output_path)
+            pass
+        except OSError as e:
+            pass
+
+    if os.path.exists(temp_directory):
+        try:
+            files = os.listdir(temp_directory)
+            for file in files:
+                file_path = os.path.join(temp_directory, file)
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+        except OSError as e:
+            pass
+
+    
+        
 
 class Question(BaseModel):
     """A quiz question along with multiple choice options and the correct answer."""
@@ -74,6 +100,7 @@ def extract_quiz(api_key,file_content):
 
 
 def get_quiz(api_key, doc_name):
+    clear_all()
     loader = PyMuPDFLoader(doc_name)
     text_splitter =  CharacterTextSplitter(
         # Set a really small chunk size, just to show.
@@ -103,5 +130,5 @@ def get_quiz(api_key, doc_name):
     # Convert dictionary to DataFrame
     df = pd.DataFrame(data)
     # Write DataFrame to Excel file
-    df.to_excel("Final_Quiz.xlsx", index=False)
+    df.to_excel(output_path, index=False)
     return df

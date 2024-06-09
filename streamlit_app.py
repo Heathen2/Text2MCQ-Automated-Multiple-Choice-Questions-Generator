@@ -1,6 +1,7 @@
 import streamlit as st
 from lang_xtract import get_quiz
 
+output_path = "output/Final_Quiz.xlsx"
 
 gpt_key = st.text_input("openai key",type="password")
 if gpt_key:
@@ -14,7 +15,7 @@ if gpt_key:
                 response = get_quiz(gpt_key, "input_to_process.pdf")
                 st.session_state["response"] = response
             st.success("Extracted and saved")
-            with open("Final_Quiz.xlsx", "rb") as file:
+            with open(output_path, "rb") as file:
                 btn = st.download_button(
                 label="Download",
                 data=file,
