@@ -5,7 +5,7 @@ from typing import List, Optional
 from langchain_openai import ChatOpenAI
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_core.pydantic_v1 import BaseModel, Field
-from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import PyMuPDFLoader
 import pandas as pd
 from datetime import datetime
 import os
@@ -102,7 +102,7 @@ def extract_quiz(api_key,file_content):
 
 def get_quiz(api_key, doc_name):
     clear_all()
-    loader = PyPDFLoader(doc_name)
+    loader = PyMuPDFLoader(doc_name)
     text_splitter =  CharacterTextSplitter(
         # Set a really small chunk size, just to show.
         chunk_size=500,
