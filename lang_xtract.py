@@ -57,16 +57,13 @@ class Data(BaseModel):
 
 def extract_quiz(api_key,file_content):
     prompt = ChatPromptTemplate.from_messages(
-        [
-            (
-                "system",
-                "You are an expert teacher who is preparing structured MCQ questions for an exam. "
-                "Analyze the texbook passage to understand and then create a structured question, four options, correct answer option and answer explanation from the passage."
-                "The passage and generated questions might have many errors which should be corrected, So you should always examine and fix the errors in all the questions, options, correct answer options and answer explanations"
-            ),
-
-            ("human", "{text}"),
-        ]
+    [
+        (
+            "system",
+            "As an expert teacher, your task is to craft well-structured multiple-choice questions (MCQs) for an upcoming exam. Begin by carefully analyzing the textbook passage provided, ensuring a deep understanding. Then, formulate a clear question, four plausible options, indicate the correct answer option, and provide a concise explanation for the answer. Note that both the passage and the generated questions may contain errors, which you must identify and rectify. Your responsibility is to meticulously examine and correct any errors in the questions, options, correct answers, and explanations."
+        ),
+        ("human", "{text}"),
+    ]
     )
 
     llm = ChatOpenAI(model="gpt-3.5-turbo",temperature=0,max_tokens=None,timeout=None,max_retries=2, api_key =api_key)
