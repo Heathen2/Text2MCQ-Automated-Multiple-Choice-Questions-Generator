@@ -9,6 +9,7 @@ from langchain_community.document_loaders import PyMuPDFLoader,Docx2txtLoader,Te
 import pandas as pd
 from datetime import datetime
 import os
+import time
 
 quiz_list = []
 output_path = "output/Final_Quiz.xlsx"
@@ -85,6 +86,7 @@ def extract_quiz(api_key, file_content):
 
         for page in file_content:
             try:
+                time.sleep(61)
                 response = runnable.invoke({"text": page.page_content})
                 questions.extend(response.Questions)
                 quiz_list.extend(response.Questions)
