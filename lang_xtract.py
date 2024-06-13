@@ -56,49 +56,68 @@ class Data(BaseModel):
     Questions: List[Question]
 
 
-def extract_quiz(api_key,file_content):
-    prompt = ChatPromptTemplate.from_messages(
-    [
-        (
-            "system",
-            "As an expert educator, you're entrusted with the crucial task of crafting meticulously structured multiple-choice questions (MCQs) for an upcoming examination. "
-            "Commence by conducting a comprehensive analysis of the provided textbook passage, ensuring a profound comprehension to unearth all potential question avenues. "
-            "Subsequently, meticulously formulate each question, ensuring utmost clarity, with four plausible options, clearly indicating the correct option 'a','b','c' or 'd', and the answer for the question. "
-            "It's imperative that each question accurately reflects any mathematical expressions, if present, within the text. "
-            "Your role entails the scrupulous examination and rectification of any discrepancies in questions, options, correct option, and answer."
-        ),
-        ("human", "{text}"),
-    ]
-    )
+def extract_quiz(api_key, file_content):
+    try:
+        prompt = ChatPromptTemplate.from_messages(
+            [
+                (
+                    "system",
+                    "As an expert educator, you're entrusted with the crucial task of crafting meticulously structured multiple-choice questions (MCQs) for an upcoming examination. "
+                    "Commence by conducting a comprehensive analysis of the provided textbook passage, ensuring a profound comprehension to unearth all potential question avenues. "
+                    "Subsequently, meticulously formulate each question, ensuring utmost clarity, with four plausible options, clearly indicating the correct option 'a','b','c' or 'd', and the answer for the question. "
+                    "It's imperative that each question accurately reflects any mathematical expressions, if present, within the text. "
+                    "Your role entails the scrupulous examination and rectification of any discrepancies in questions, options, correct option, and answer."
+                ),
+                ("human", "{text}"),
+            ]
+        )
 
+        llm = ChatOpenAI(
+            model="gpt-3.5-turbo",
+            temperature=0,
+            max_tokens=None,
+            timeout=None,
+            max_retries=2,
+            api_key=api_key
+        )
+        questions = []
+        runnable = prompt | llm.with_structured_output(schema=Data)
 
+        for page in file_content:
+            try:
+                response = runnable.invoke({"text": page.page_content})
+                questions.extend(response.Questions)
+                quiz_list.extend(response.Questions)
+            except Exception as e:
+                # Handle rate limit exceptions or any other API-related errors here
+                print("Error:", e)
+                # Optionally, you can re-raise the exception if needed
+                raise
 
-    llm = ChatOpenAI(model="gpt-3.5-turbo",temperature=0,max_tokens=None,timeout=None,max_retries=2, api_key =api_key)
-    questions = []
-    runnable = prompt | llm.with_structured_output(schema=Data)
-    
-    for page in file_content:
-        response = runnable.invoke({"text": page.page_content})
-        questions.extend(response.Questions)
-        quiz_list.extend(response.Questions)
+        # Convert questions to dictionary for easier handling
+        data = {
+            "question": [q.question for q in questions],
+            "option_a": [q.option_a for q in questions],
+            "option_b": [q.option_b for q in questions],
+            "option_c": [q.option_c for q in questions],
+            "option_d": [q.option_d for q in questions],
+            "correct_option": [q.correct_option for q in questions],
+            "answer": [q.answer for q in questions]
+        }
 
-    # Convert questions to dictionary for easier handling
-    data = {
-        "question": [q.question for q in questions],
-        "option_a": [q.option_a for q in questions],
-        "option_b": [q.option_b for q in questions],
-        "option_c": [q.option_c for q in questions],
-        "option_d": [q.option_d for q in questions],
-        "correct_option": [q.correct_option for q in questions],
-        "answer": [q.answer for q in questions]
-    }
+        # Convert dictionary to DataFrame
+        df = pd.DataFrame(data)
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        file_name = f"temp/Questions_{timestamp}.xlsx"
+        # Write DataFrame to Excel file
+        df.to_excel(file_name, index=False)
 
-    # Convert dictionary to DataFrame
-    df = pd.DataFrame(data)
-    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    file_name = f"temp/Questions_{timestamp}.xlsx"
-    # Write DataFrame to Excel file
-    df.to_excel(file_name, index=False)
+    except Exception as e:
+        # Handle any other exceptions that might occur
+        print("Error:", e)
+        # Optionally, you can re-raise the exception if needed
+        raise
+
 
 
 
