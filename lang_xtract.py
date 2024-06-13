@@ -5,7 +5,7 @@ from typing import List, Optional
 from langchain_openai import ChatOpenAI
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_core.pydantic_v1 import BaseModel, Field
-from langchain_community.document_loaders import PyMuPDFLoader,Docx2txtLoader,TextLoader
+from langchain_community.document_loaders import PyMuPDFLoader,Docx2txtLoader,TextLoader,PyPDFLoader,PyPDFium2Loader
 import pandas as pd
 from datetime import datetime
 import os
@@ -105,12 +105,6 @@ def extract_quiz(api_key,file_content):
 
 def get_quiz(api_key, doc_name,file_type):
     clear_all()
-    if file_type == 'pdf':
-        loader = PyMuPDFLoader(doc_name)
-    elif file_type == 'docx' or file_type=='doc':
-        loader = Docx2txtLoader(doc_name)
-    elif file_type == 'txt':
-        loader = TextLoader(doc_name,encoding='utf-8')
     text_splitter =  CharacterTextSplitter(
         # Set a really small chunk size, just to show.
         chunk_size=500,
@@ -118,13 +112,39 @@ def get_quiz(api_key, doc_name,file_type):
         # length_function=len,
         # is_separator_regex=False,
     )
-    file_content = loader.load_and_split(text_splitter=text_splitter)
+    
+    try:
+        if file_type == 'pdf':
+            try:
+                loader = PyMuPDFLoader(doc_name)
+                file_content = loader.load_and_split(text_splitter=text_splitter)
+                print(file_content[0].page_content)
+            except:
+                loader = PyPDFLoader(doc_name)
+                file_content = loader.load_and_split(text_splitter=text_splitter)
+            else:
+                 pass        
+        elif file_type == 'docx' or file_type=='doc':
+            loader = Docx2txtLoader(doc_name)
+            file_content = loader.load_and_split(text_splitter=text_splitter)
+        elif file_type == 'txt':
+            loader = TextLoader(doc_name,encoding='utf-8')
+            file_content = loader.load_and_split(text_splitter=text_splitter)
+    except:
+         pass
+    
     file_content_length = len(file_content)
     for i in range(0, file_content_length, 20):
         if i + 20 > file_content_length:
-            extract_quiz(api_key,file_content[i:file_content_length])
+            try:
+                extract_quiz(api_key,file_content[i:file_content_length])
+            except:
+                 pass    
         else:
-            extract_quiz(api_key,file_content[i:i+20])        
+            try:
+                extract_quiz(api_key,file_content[i:i+20])
+            except:
+                 pass       
 
     data = {
             "question": [q.question for q in quiz_list],
